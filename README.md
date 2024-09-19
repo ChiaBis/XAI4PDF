@@ -1,3 +1,15 @@
+# This fork 
+
+The scope of this repository, which forks the public `XAI4PDF` repo created by Brandon Kriesten, Jonathan Gomprecht, and T.J. Hobbs, is to try and apply explainable AI to another set of PDFs. 
+Specifically, the analysis will be done with PDFs coming from a NN fit -- `NavyPier PDFs`.
+
+
+
+
+
+
+
+# Original repo README.md
 README: XAI4PDF, July 2024.
 
 The XAI4PDF project is a set of Python analysis modules which produce
@@ -21,3 +33,4 @@ Finally we have also included fully trained model weights which can be
 loaded into the analysis Jupyter notebooks called rn.chkpnt.weights.h5 for
 the pheno classifier and pdf_ratio_classifier.hdf5 for the parton
 flavor classifier.
+
