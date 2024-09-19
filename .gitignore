@@ -8,3 +8,6 @@ __pycache__/
 
 # Ignore VSCode settings
 *.code-workspace
+
+# Ignore Mac settings
+.DS_Store
