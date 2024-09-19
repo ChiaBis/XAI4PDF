@@ -1,0 +1,10 @@
+
+# Ignore pdf products of jupyter notebooks
+confusion_matrix_pdf_ratios.pdf
+guidedbackprop_saliency_map.pdf
+
+# Ignore python chache
+__pycache__/
+
+# Ignore VSCode settings
+*.code-workspace
