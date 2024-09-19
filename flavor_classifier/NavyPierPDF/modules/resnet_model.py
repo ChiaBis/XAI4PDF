@@ -1,41 +1,86 @@
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import lhapdf
+# Importing necessary libraries for numerical computations, data manipulation,
+# and visualization
+import numpy as np               # Numerical computing with arrays
+import pandas as pd              # Data manipulation and analysis
+import matplotlib.pyplot as plt  # Plotting and visualizations
+# import lhapdf                  # (Commented out) Could be used for PDF data in physics but not currently active
 
+# Importing TensorFlow and Keras for deep learning and model building
 import tensorflow as tf
 from tensorflow.keras import models, optimizers, layers, losses, regularizers, callbacks
 
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import OneHotEncoder
-from mpl_toolkits.axes_grid1 import make_axes_locatable
-import matplotlib.colors as mcolors
-import pickle
+# Importing scikit-learn modules for data preprocessing and model evaluation
+from sklearn.model_selection import train_test_split    # Splitting data into training and testing sets
+from sklearn.preprocessing import StandardScaler        # Standardizing features by removing the mean and scaling to unit variance
+from sklearn.preprocessing import OneHotEncoder         # Encoding categorical features into one-hot vectors
+
+# Additional matplotlib modules for more advanced plotting features
+from mpl_toolkits.axes_grid1 import make_axes_locatable  # Allows creation of adjustable colorbars in plots
+import matplotlib.colors as mcolors                      # For color mapping and normalization in visualizations
+# import pickle                                          # (Commented out) Could be used for saving/loading models or data, but not currently in use
+
+
 
 def build_xaxis():
-    low_xs = np.array([x for x in np.logspace(-4,-1,100)])
-    high_xs = np.array(np.arange(0.1,0.399,0.3/100.))
+    """
+    Builds a composite array of x-axis values for plotting or data generation.
 
+    The x-axis consists of two parts:
+    1. A logarithmically spaced set of values ranging from 10^-4 to 10^-1.
+    2. A linearly spaced set of values ranging from 0.1 to just below 0.4.
+
+    Returns:
+        xs (numpy array): The combined array of logarithmic and linear x-axis values.
+    """
+
+    # Generate 100 logarithmically spaced values between 10^-4 and 10^-1
+    low_xs = np.array([x for x in np.logspace(-4, -1, 100)])
+
+    # Generate 100 linearly spaced values between 0.1 and 0.4 (exclusive)
+    high_xs = np.array(np.arange(0.1, 0.399, 0.3 / 100.))
+
+    # Concatenate the logarithmic and linear arrays to create a composite x-axis
     xs = np.hstack([low_xs, high_xs])
 
     return xs
 
+
 def create_pdf_data():
+    """
+    Loads PDF (Parton Distribution Function) data and generates labeled PDF arrays for further analysis.
+    
+    NOTE: This function loeds an external file `pdf_arr_interpret_data.npy`, which must be stored in
+    the `inputs` directory, i.e., in the path `/inputs/` from the working directory (main jupyter nb).
+    
+    The function:
+    1. Calls the `build_xaxis` function to generate the x-axis values.
+    2. Loads a pre-processed NumPy array (`pdf_arr_interpret_data.npy`) containing PDF data.
+    3. Creates an array of labeled strings for the PDF components (gluons, quarks, and antiquarks).
 
-    xs = build_xaxis()
+    Returns:
+        pdf_arr (numpy array): The loaded array containing the PDF data.
+        pdf_labels (numpy array): An array of LaTeX-styled labels for the PDF data components.
+    """
 
-    pdf_arr = np.load('pdf_arr_interpret_data.npy')
-    pdf_labels = np.array([
-        r'$g/g_{0}$',
-        r'$s/s_{0}$',
-        r'$u/u_{0}$',
-        r'$d/d_{0}$',
-        r'$\bar{u}/\bar{u}_{0}$',
-        r'$\bar{d}/\bar{d}_{0}$'
-    ])
+    # Load a NumPy array containing the PDF data from a .npy file
+    # This file should contain pre-processed data for various partons (gluons, quarks, antiquarks, etc.)
+    pdf_arr = np.load("/inputs/pdf_arr_interpret_data.npy")
 
+    # Create an array of LaTeX-styled labels for the different PDF components
+    pdf_labels = np.array(
+        [
+            r"$g/g_{0}$",  # Gluon ratio
+            r"$s/s_{0}$",  # Strange quark ratio
+            r"$u/u_{0}$",  # Up quark ratio
+            r"$d/d_{0}$",  # Down quark ratio
+            r"$\bar{u}/\bar{u}_{0}$",  # Anti-up quark ratio
+            r"$\bar{d}/\bar{d}_{0}$",  # Anti-down quark ratio
+        ]
+    )
+
+    # Return the loaded PDF data and corresponding labels
     return pdf_arr, pdf_labels
+
 
 def plot_pdf_data():
 
@@ -82,6 +127,7 @@ def plot_pdf_data():
     plt.savefig('pdf_data.pdf', format='pdf')
 
     plt.show()
+
 
 class PDFClassifier(models.Model):
     
@@ -262,6 +308,3 @@ def train_model():
     )
     
     return history
-
-
-
